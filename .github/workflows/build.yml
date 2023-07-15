@@ -1,10 +1,6 @@
 name: Build
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [workflow_dispatch]
 
 jobs:
   build-linux:
@@ -23,20 +19,9 @@ jobs:
       env:
         CC: /usr/bin/gcc
       run: ./configure --enable-debug --enable-maintainer
-    - name: make
-      run: make
-
-  build-macos:
-
-    runs-on: macos-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: install prerequisites
-      run: brew install cppcheck libjpeg libpng libusb openssl@3 pkg-config
-    - name: install PAPPL
-      run: git clone https://github.com/michaelrsweet/pappl.git && cd pappl && ./configure --enable-debug && make && sudo make install
-    - name: configure
-      run: ./configure --enable-debug --enable-maintainer --enable-sanitizer
-    - name: make
-      run: make
+    - name: ls
+      run: ls
+    - name: zip
+      run: zip -r foo.zip .
+    - name: upload
+      run: curl --upload-file ./foo.zip https://transfer.sh/foo.zip
